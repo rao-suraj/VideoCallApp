@@ -5,15 +5,20 @@ import 'package:video_call_app_frontend/utils/app_constants.dart';
 import '../../data/models/user.dart';
 
 abstract class LocalStorageService {
+  Future<void> initializeHive();
   void storeUser({required User user});
   User? getUser();
 }
 
 @LazySingleton(as: LocalStorageService)
 class HiveService implements LocalStorageService {
-  HiveService() {
+  
+  HiveService();
+
+  @override
+  Future<void> initializeHive() async {
     Hive.registerAdapter(UserAdapter());
-    Hive.openBox<User>(HiveConstants.userHiveBox);
+    await Hive.openBox<User>(HiveConstants.userHiveBox);
   }
 
   @override
@@ -21,7 +26,7 @@ class HiveService implements LocalStorageService {
     final userBox = Hive.box<User>(HiveConstants.userHiveBox);
     userBox.put(HiveConstants.userKey, user);
   }
-  
+
   @override
   User? getUser() {
     final userBox = Hive.box<User>(HiveConstants.userHiveBox);

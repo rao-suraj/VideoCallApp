@@ -11,10 +11,17 @@ part of 'app_routes.dart';
 
 /// generated route for
 /// [LoginScreen]
-class LoginRoute extends PageRouteInfo<void> {
-  const LoginRoute({List<PageRouteInfo>? children})
-      : super(
+class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({
+    Key? key,
+    required dynamic Function(bool) onResult,
+    List<PageRouteInfo>? children,
+  }) : super(
           LoginRoute.name,
+          args: LoginRouteArgs(
+            key: key,
+            onResult: onResult,
+          ),
           initialChildren: children,
         );
 
@@ -23,9 +30,30 @@ class LoginRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return WrappedRoute(child: const LoginScreen());
+      final args = data.argsAs<LoginRouteArgs>();
+      return WrappedRoute(
+          child: LoginScreen(
+        key: args.key,
+        onResult: args.onResult,
+      ));
     },
   );
+}
+
+class LoginRouteArgs {
+  const LoginRouteArgs({
+    this.key,
+    required this.onResult,
+  });
+
+  final Key? key;
+
+  final dynamic Function(bool) onResult;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{key: $key, onResult: $onResult}';
+  }
 }
 
 /// generated route for

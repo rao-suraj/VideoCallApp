@@ -9,7 +9,8 @@ import '../../routes/app_routes.dart';
 
 @RoutePage()
 class LoginScreen extends StatefulWidget implements AutoRouteWrapper {
-  const LoginScreen({super.key});
+  final Function(bool) onResult;
+  const LoginScreen({super.key, required this.onResult});
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -55,19 +56,19 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
-      body: BlocConsumer<LoginCubit,LoginState>(
-        listener: (context,state) {
-          if(state is LoginError) {
-            _showError(state.message);
-          } else if(state is LoginSuccess) {
-            AutoRouter.of(context).replace(VideoCallRoute());
-          }
-        },
-        builder:(context,state) {
-          if(state is LoginLoading) {
-            return Center(child: CircularProgressIndicator());
-          }
-          return Padding(
+      body: BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
+        if (state is LoginError) {
+          _showError(state.message);
+        } else if (state is LoginSuccess) {
+          // AutoRouter.of(context).replace(VideoCallRoute());
+          widget.onResult(true);
+          context.maybePop();
+        }
+      }, builder: (context, state) {
+        if (state is LoginLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -100,8 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         );
-        }
-      ),
+      }),
     );
   }
 
