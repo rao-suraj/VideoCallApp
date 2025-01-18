@@ -20,13 +20,8 @@ class VideoCallApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => getIt<SignupCubit>()),
-      ],
-      child: MaterialApp.router(
-        routerConfig: _router.config(),
-      ),
+    return MaterialApp.router(
+      routerConfig: _router.config(),
     );
   }
 }

@@ -61,7 +61,7 @@ class SignupRoute extends PageRouteInfo<void> {
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const SignupScreen();
+      return WrappedRoute(child: const SignupScreen());
     },
   );
 }

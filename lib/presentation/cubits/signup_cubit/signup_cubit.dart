@@ -12,19 +12,15 @@ class SignupCubit extends Cubit<SignupState> {
     required String username,
     required String phoneNumber,
     required String password,
-    required String confirmPassword,
   }) async {
     print("SignupCubit: signup");
     emit(SignupLoading());
 
-    // final response = await _userRepository.signup(username, phoneNumber, password);
+    final response = await _userRepository.signup(username, phoneNumber, password);
 
-    // response.fold(
-    //   (error) => emit(SignupError(error.message?? "something went wrong")),
-    //   (user) => emit(SignupSuccess()),
-    // );
-    await Future.delayed(Duration(seconds: 4));
-
-    emit(SignupSuccess());
+    response.fold(
+      (error) => emit(SignupError(error.message?? "something went wrong")),
+      (user) => emit(SignupSuccess()),
+    );
   }
 }
