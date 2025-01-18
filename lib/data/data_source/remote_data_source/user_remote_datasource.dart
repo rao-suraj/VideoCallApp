@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:video_call_app_frontend/core/api/api_client.dart';
 import 'package:video_call_app_frontend/core/api/api_constants.dart';
 import 'package:video_call_app_frontend/data/models/request_models/login_request_model.dart';
+import 'package:video_call_app_frontend/data/models/response_models/get_all_user_response_model.dart';
 import 'package:video_call_app_frontend/data/models/user.dart';
 
 import '../../models/request_models/signup_request_model.dart';
@@ -10,6 +11,7 @@ abstract class UserRemoteDatasource {
   Future<User> login({required LoginRequestModel loginRequestModel});
   Future<User> signup({required SignupRequestModel signupRequestModel});
   Future<void> logout();
+  Future<GetAllUserResponseModel> getUser();
 }
 
 @LazySingleton(as: UserRemoteDatasource)
@@ -20,7 +22,8 @@ class UserRemoteDatasourceImpl extends UserRemoteDatasource {
 
   @override
   Future<User> login({required LoginRequestModel loginRequestModel}) async {
-    final response =await _apiClient.get(path: ApiConstants.login ,params: loginRequestModel.toJson());
+    final response = await _apiClient.get(
+        path: ApiConstants.login, params: loginRequestModel.toJson());
     return User.fromJson(response);
   }
 
@@ -32,8 +35,14 @@ class UserRemoteDatasourceImpl extends UserRemoteDatasource {
 
   @override
   Future<User> signup({required SignupRequestModel signupRequestModel}) async {
-    final response = await _apiClient.post(path: ApiConstants.signup, params: signupRequestModel.toJson());
+    final response = await _apiClient.post(
+        path: ApiConstants.signup, params: signupRequestModel.toJson());
     return User.fromJson(response);
   }
 
+  @override
+  Future<GetAllUserResponseModel> getUser() async {
+    final resposen = await _apiClient.get(path: ApiConstants.getAllUsers);
+    return GetAllUserResponseModel.fromJson(resposen);
+  }
 }

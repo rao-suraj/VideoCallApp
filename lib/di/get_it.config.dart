@@ -14,6 +14,7 @@ import 'package:injectable/injectable.dart' as _i526;
 
 import '../core/api/api_client.dart' as _i424;
 import '../core/services/local_storage_service.dart' as _i1003;
+import '../core/services/socket_service.dart' as _i862;
 import '../data/data_source/local_data_source/user_local_data_source.dart'
     as _i56;
 import '../data/data_source/remote_data_source/user_remote_datasource.dart'
@@ -22,9 +23,11 @@ import '../data/repository/test_repository_impl.dart' as _i786;
 import '../data/repository/user_repository_impl.dart' as _i890;
 import '../domain/repository/test_repository.dart' as _i1073;
 import '../domain/repository/user_repository.dart' as _i541;
+import '../presentation/cubits/dashboard_cubit/dashboard_cubit.dart' as _i356;
 import '../presentation/cubits/login_cubit/login_cubit.dart' as _i402;
 import '../presentation/cubits/new_cubit/new_cubit.dart' as _i476;
 import '../presentation/cubits/signup_cubit/signup_cubit.dart' as _i53;
+import '../presentation/cubits/socket_cubit/socket_cubit.dart' as _i493;
 import 'injection_module.dart' as _i212;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -42,6 +45,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(() => injectionModule.dio());
     gh.lazySingleton<_i1073.TestRepository>(() => _i786.TestRepositoryImpl());
     gh.lazySingleton<_i1003.LocalStorageService>(() => _i1003.HiveService());
+    gh.lazySingleton<_i862.SocketService>(() => _i862.IOSocket());
     gh.lazySingleton<_i424.ApiClient>(() => _i424.ApiClient(gh<_i361.Dio>()));
     gh.factory<_i476.NewCubit>(
         () => _i476.NewCubit(gh<_i1073.TestRepository>()));
@@ -51,12 +55,18 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i56.UserLocalDataSourceImpl(gh<_i1003.LocalStorageService>()));
     gh.lazySingleton<_i541.UserRepository>(() => _i890.UserRepositoryImpl(
           gh<_i658.UserRemoteDatasource>(),
-          gh<_i1003.LocalStorageService>(),
+          gh<_i56.UserLocalDataSource>(),
+        ));
+    gh.factory<_i493.SocketCubit>(() => _i493.SocketCubit(
+          gh<_i862.SocketService>(),
+          gh<_i541.UserRepository>(),
         ));
     gh.factory<_i402.LoginCubit>(
         () => _i402.LoginCubit(gh<_i541.UserRepository>()));
     gh.factory<_i53.SignupCubit>(
         () => _i53.SignupCubit(gh<_i541.UserRepository>()));
+    gh.factory<_i356.DashboardCubit>(
+        () => _i356.DashboardCubit(gh<_i541.UserRepository>()));
     return this;
   }
 }

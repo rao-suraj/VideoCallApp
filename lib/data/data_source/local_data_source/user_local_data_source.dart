@@ -6,6 +6,7 @@ import '../../models/user.dart';
 abstract class UserLocalDataSource {
   void storeUser({required User user});
   User? getUser();
+  int? getUserId();
 }
 
 @LazySingleton(as: UserLocalDataSource)
@@ -21,5 +22,11 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   @override
   void storeUser({required User user}) {
     _localStorageService.storeUser(user: user);
+  }
+
+  @override
+  int? getUserId() {
+    final user = _localStorageService.getUser();
+    return user?.id;
   }
 }

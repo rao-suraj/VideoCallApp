@@ -3,6 +3,9 @@ class ApiConstants {
 
   static const String api = '/app';
   static const String user = '$api/user';
+
+  
   static const String login = '$user/login';
   static const String signup = '$user/signup';
+  static const String getAllUsers = '$user/getAll';
 }

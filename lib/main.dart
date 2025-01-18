@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:video_call_app_frontend/core/services/local_storage_service.dart';
 import 'package:video_call_app_frontend/routes/app_routes.dart';
 import 'data/models/user.dart';
 import 'di/get_it.dart';
+import 'presentation/cubits/socket_cubit/socket_cubit.dart';
 
 var authenticated = false;
 
@@ -30,8 +32,13 @@ class VideoCallApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: _router.config(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<SocketCubit>())
+      ],
+      child: MaterialApp.router(
+        routerConfig: _router.config(),
+      ),
     );
   }
 }
