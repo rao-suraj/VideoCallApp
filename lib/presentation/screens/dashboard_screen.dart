@@ -5,6 +5,7 @@ import 'package:video_call_app_frontend/presentation/cubits/dashboard_cubit/dash
 import 'package:video_call_app_frontend/presentation/cubits/dashboard_cubit/dashboard_cubit.dart';
 import 'package:video_call_app_frontend/presentation/cubits/socket_cubit/socket_cubit.dart';
 import 'package:video_call_app_frontend/presentation/cubits/socket_cubit/socket_state.dart';
+import 'package:video_call_app_frontend/routes/app_routes.dart';
 
 import '../../di/get_it.dart';
 import '../utils/app_colors.dart';
@@ -40,10 +41,14 @@ class _DashboardScreenState extends State<DashboardScreen>
       appBar: AppBar(
         title: Text('Dashboard'),
       ),
-      body: BlocListener<SocketCubit, SocketState>(
+      body: BlocConsumer<SocketCubit, SocketState>(
         listener: (context, state) {
-          if (state is SocketReceivedCallState) {
-            print('Received call from ${state.callerId}');
+          if (state is SocketIncommingCall) {
+            context.pushRoute(IncomingCallRoute(callerId: state.callerId));
+          }
+          if (state is SocketTokenState) {
+            print("${state.token} ${state.otherUserId}");
+            context.pushRoute(VideoCallRoute());
           }
           if (state is SocketErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -51,35 +56,45 @@ class _DashboardScreenState extends State<DashboardScreen>
                 content: Text(state.message)));
           }
         },
-        child: BlocConsumer<DashboardCubit, DashbardState>(
-            listener: (context, state) {
-          if (state is DashboardError) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: AppColors.errorRed,
-                content: Text(state.message)));
-          }
-        }, builder: (context, state) {
-          if (state is DashboardLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is DashboardSuccess) {
-            return ListView.builder(
-              itemCount: state.users.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(state.users[index].name),
-                  subtitle: Text(state.users[index].phoneNumber.toString()),
-                  onTap: () {
-                    // context.router.push(VideoCallRoute(calleeId: state.users[index].id));
-                  },
-                );
-              },
-            );
-          } else {
+        builder: (context, state) {
+          if (state is SocketLoading) {
             return Center(
-              child: Text("Some error accured"),
+              child: CircularProgressIndicator(),
             );
           }
-        }),
+          return BlocConsumer<DashboardCubit, DashbardState>(
+              listener: (context, state) {
+            if (state is DashboardError) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: AppColors.errorRed,
+                  content: Text(state.message)));
+            }
+          }, builder: (context, state) {
+            if (state is DashboardLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is DashboardSuccess) {
+              return ListView.builder(
+                itemCount: state.users.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(state.users[index].name),
+                    subtitle: Text(state.users[index].phoneNumber.toString()),
+                    trailing: IconButton(
+                        onPressed: () {
+                          context.read<SocketCubit>().callUser(
+                              userId: state.users[index].id.toString());
+                        },
+                        icon: Icon(Icons.call)),
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: Text("Some error accured"),
+              );
+            }
+          });
+        },
       ),
     );
   }

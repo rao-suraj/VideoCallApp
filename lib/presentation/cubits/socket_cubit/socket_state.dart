@@ -19,6 +19,12 @@ class SocketEmittedState extends SocketState {
   List<Object> get props => [event, data];
 }
 
+class SocketLoading extends SocketState {
+  const SocketLoading();
+  @override
+  List<Object?> get props => [];
+}
+
 class SocketErrorState extends SocketState {
   final String message;
 
@@ -28,11 +34,21 @@ class SocketErrorState extends SocketState {
   List<Object> get props => [message];
 }
 
-class SocketReceivedCallState extends SocketState {
+class SocketIncommingCall extends SocketState {
   final String callerId;
 
-  const SocketReceivedCallState({required this.callerId});
+  const SocketIncommingCall({required this.callerId});
 
   @override
   List<Object> get props => [callerId];
+}
+
+class SocketTokenState extends SocketState {
+  final String token;
+  final String otherUserId;
+
+  const SocketTokenState(this.token,this.otherUserId);
+
+  @override
+  List<Object?> get props => [token];
 }

@@ -29,6 +29,52 @@ class DashboardRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [IncomingCallScreen]
+class IncomingCallRoute extends PageRouteInfo<IncomingCallRouteArgs> {
+  IncomingCallRoute({
+    Key? key,
+    required String callerId,
+    List<PageRouteInfo>? children,
+  }) : super(
+          IncomingCallRoute.name,
+          args: IncomingCallRouteArgs(
+            key: key,
+            callerId: callerId,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'IncomingCallRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<IncomingCallRouteArgs>();
+      return IncomingCallScreen(
+        key: args.key,
+        callerId: args.callerId,
+      );
+    },
+  );
+}
+
+class IncomingCallRouteArgs {
+  const IncomingCallRouteArgs({
+    this.key,
+    required this.callerId,
+  });
+
+  final Key? key;
+
+  final String callerId;
+
+  @override
+  String toString() {
+    return 'IncomingCallRouteArgs{key: $key, callerId: $callerId}';
+  }
+}
+
+/// generated route for
 /// [LoginScreen]
 class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
   LoginRoute({
