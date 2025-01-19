@@ -27,7 +27,8 @@ import '../presentation/cubits/dashboard_cubit/dashboard_cubit.dart' as _i356;
 import '../presentation/cubits/login_cubit/login_cubit.dart' as _i402;
 import '../presentation/cubits/new_cubit/new_cubit.dart' as _i476;
 import '../presentation/cubits/signup_cubit/signup_cubit.dart' as _i53;
-import '../presentation/cubits/socket_cubit/socket_cubit.dart' as _i493;
+import '../presentation/cubits/videocall_signaling_cubit/videocall_signaling_cubit.dart'
+    as _i176;
 import 'injection_module.dart' as _i212;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -57,10 +58,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i658.UserRemoteDatasource>(),
           gh<_i56.UserLocalDataSource>(),
         ));
-    gh.factory<_i493.SocketCubit>(() => _i493.SocketCubit(
-          gh<_i862.SocketService>(),
-          gh<_i541.UserRepository>(),
-        ));
+    gh.factory<_i176.VideoCallSignalingCubit>(
+        () => _i176.VideoCallSignalingCubit(
+              gh<_i862.SocketService>(),
+              gh<_i541.UserRepository>(),
+            ));
     gh.factory<_i402.LoginCubit>(
         () => _i402.LoginCubit(gh<_i541.UserRepository>()));
     gh.factory<_i53.SignupCubit>(

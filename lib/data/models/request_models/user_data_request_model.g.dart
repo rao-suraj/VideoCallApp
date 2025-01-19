@@ -1,20 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'accept_call_request_model.dart';
+part of 'user_data_request_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AcceptCallRequestModel _$AcceptCallRequestModelFromJson(
+UserDataRequestModel _$UserDataRequestModelFromJson(
         Map<String, dynamic> json) =>
-    AcceptCallRequestModel(
+    UserDataRequestModel(
       callerId: json['callerId'] as String,
       receiverId: json['receiverId'] as String,
     );
 
-Map<String, dynamic> _$AcceptCallRequestModelToJson(
-        AcceptCallRequestModel instance) =>
+Map<String, dynamic> _$UserDataRequestModelToJson(
+        UserDataRequestModel instance) =>
     <String, dynamic>{
       'callerId': instance.callerId,
       'receiverId': instance.receiverId,

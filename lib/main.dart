@@ -6,7 +6,7 @@ import 'package:video_call_app_frontend/core/services/local_storage_service.dart
 import 'package:video_call_app_frontend/routes/app_routes.dart';
 import 'data/models/user.dart';
 import 'di/get_it.dart';
-import 'presentation/cubits/socket_cubit/socket_cubit.dart';
+import 'presentation/cubits/videocall_signaling_cubit/videocall_signaling_cubit.dart';
 
 var authenticated = false;
 
@@ -34,7 +34,7 @@ class VideoCallApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => getIt<SocketCubit>())
+        BlocProvider(create: (context) => getIt<VideoCallSignalingCubit>())
       ],
       child: MaterialApp.router(
         routerConfig: _router.config(),

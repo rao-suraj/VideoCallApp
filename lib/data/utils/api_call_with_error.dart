@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:either_dart/either.dart';
 
 import 'app_enums.dart';
-import '../data/models/app_error.dart';
+import '../models/app_error.dart';
 
 class ApiCallWithError {
   const ApiCallWithError._();

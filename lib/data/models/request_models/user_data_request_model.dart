@@ -1,14 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'accept_call_request_model.g.dart';
+part 'user_data_request_model.g.dart';
 
 @JsonSerializable()
-class AcceptCallRequestModel {
+class UserDataRequestModel {
   final String callerId;
   final String receiverId;
 
-  const AcceptCallRequestModel(
+  const UserDataRequestModel(
       {required this.callerId, required this.receiverId});
 
-  Map<String,dynamic> toJson() => _$AcceptCallRequestModelToJson(this);
+  Map<String,dynamic> toJson() => _$UserDataRequestModelToJson(this);
 }

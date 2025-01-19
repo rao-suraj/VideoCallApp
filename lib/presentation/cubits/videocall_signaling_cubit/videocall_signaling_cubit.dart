@@ -1,25 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:video_call_app_frontend/data/models/request_models/accept_call_request_model.dart';
+import 'package:video_call_app_frontend/data/models/request_models/user_data_request_model.dart';
 import 'package:video_call_app_frontend/data/models/request_models/reject_call_request_model.dart';
 import 'package:video_call_app_frontend/data/models/response_models/token_response_model.dart';
 import 'package:video_call_app_frontend/domain/repository/user_repository.dart';
-import 'package:video_call_app_frontend/presentation/cubits/socket_cubit/socket_state.dart';
+import 'package:video_call_app_frontend/presentation/cubits/videocall_signaling_cubit/videocall_signaling_state.dart';
 import 'package:video_call_app_frontend/presentation/utils/constants.dart';
 
 import '../../../core/services/socket_service.dart';
 
 @injectable
-class SocketCubit extends Cubit<SocketState> {
+class VideoCallSignalingCubit extends Cubit<VideoCallSignalingState> {
   final SocketService _socketService;
   final UserRepository _userRepository;
   late int? userId;
-  SocketCubit(this._socketService, this._userRepository)
-      : super(SocketInitial()) {
+  VideoCallSignalingCubit(this._socketService, this._userRepository)
+      : super(VideoCallSignalingInitial()) {
     final response = _userRepository.getUserId();
 
     response.fold((l) {
-      emit(SocketErrorState(message: l.message ?? "Something went wrong"));
+      emit(VideoCallSignalingErrorState(message: l.message ?? "Something went wrong"));
       userId = null;
     }, (r) => userId = r);
   }
@@ -45,17 +45,17 @@ class SocketCubit extends Cubit<SocketState> {
   void listen() {
     _socketService.listen(SocketConstants.incomingnCallEvent, (callerId) {
       print("CALL INCOMING");
-      emit(SocketIncommingCall(callerId: callerId));
+      emit(VideoCallSignalingIncommingCall(callerId: callerId));
     });
 
     _socketService.listen(SocketConstants.tokenEvent, (data) {
-      // try {
+      try {
       final response = TokenResponseModel.fromJson(data);
-      emit(SocketTokenState(response.token, response.otherUserId));
-      // } catch (e) {
-      //   emit(SocketErrorState(message: "Could not get call data"));
-      //   print(e);
-      // }
+      emit(VideoCallSignalingTokenState(response.token, response.otherUserId));
+      } catch (e) {
+        emit(VideoCallSignalingErrorState(message: "Could not get call data"));
+        print(e);
+      }
     });
   }
 
@@ -68,10 +68,10 @@ class SocketCubit extends Cubit<SocketState> {
   }
 
   void acceptCall({required String callerId}) {
-    emit(SocketLoading());
+    emit(VideoCallSignalingLoading());
     _socketService.emit(
         SocketConstants.acceptCallEvent,
-        AcceptCallRequestModel(
+        UserDataRequestModel(
             callerId: callerId, receiverId: userId!.toString()));
   }
 
@@ -83,7 +83,7 @@ class SocketCubit extends Cubit<SocketState> {
   void callUser({required String userId}) {
     _socketService.emit(
         SocketConstants.callUserEvent,
-        AcceptCallRequestModel(
+        UserDataRequestModel(
             callerId: this.userId!.toString(), receiverId: userId));
   }
 }

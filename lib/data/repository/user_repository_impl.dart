@@ -7,8 +7,8 @@ import 'package:video_call_app_frontend/data/models/request_models/signup_reques
 import 'package:video_call_app_frontend/data/models/response_models/get_all_user_response_model.dart';
 import 'package:video_call_app_frontend/data/models/user.dart';
 import 'package:video_call_app_frontend/domain/repository/user_repository.dart';
-import 'package:video_call_app_frontend/utils/api_call_with_error.dart';
-import 'package:video_call_app_frontend/utils/app_enums.dart';
+import 'package:video_call_app_frontend/data/utils/api_call_with_error.dart';
+import 'package:video_call_app_frontend/data/utils/app_enums.dart';
 
 import '../models/request_models/login_request_model.dart';
 

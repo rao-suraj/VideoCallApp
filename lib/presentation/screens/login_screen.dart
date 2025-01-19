@@ -5,7 +5,6 @@ import 'package:video_call_app_frontend/presentation/cubits/login_cubit/login_cu
 import 'package:video_call_app_frontend/presentation/cubits/login_cubit/login_state.dart';
 
 import '../../di/get_it.dart';
-import '../../routes/app_routes.dart';
 
 @RoutePage()
 class LoginScreen extends StatefulWidget implements AutoRouteWrapper {

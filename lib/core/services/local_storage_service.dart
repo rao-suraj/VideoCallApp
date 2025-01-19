@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
-import 'package:video_call_app_frontend/utils/app_constants.dart';
+import 'package:video_call_app_frontend/data/utils/app_constants.dart';
 
 import '../../data/models/user.dart';
 

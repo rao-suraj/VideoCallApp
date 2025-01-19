@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
-import '../../utils/app_constants.dart';
+import '../utils/app_constants.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
